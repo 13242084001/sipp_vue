@@ -99,7 +99,7 @@
             <BreadcrumbItem to="/index/workbench">首页</BreadcrumbItem>
             <BreadcrumbItem>{{this.$route.name|breadcrumb}}</BreadcrumbItem>
           </Breadcrumb>
-          <Content :style="{padding: '24px', margin: '24px, 0, 0, 0', minHeight: '700px', background: '#fff'}">
+          <Content :style="{padding: '24px', margin: '24px, 0, 0, 0', minHeight: '700px', minWidth: '10px', background: '#fff'}">
 
             <router-view/>
 

@@ -1,7 +1,7 @@
 <template>
 
     <Row :gutter="16">
-    <Col span="6">
+    <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 6}" :lg="{ span: 6}">
       <a style="float: right;margin-right: 18px;line-height: 38px"
              @click="Modal=true; refresh(); "><i
             class="fa fa-plus fa-lg"
@@ -77,9 +77,9 @@
       </Collapse>
 
     </Col>
-    <Col span="18">
+    <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 18}" :lg="{ span: 18}">
       <Row :gutter="16">
-        <Col span="8">
+        <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 8}" :lg="{ span: 8}">
       <div>
 
         <Card style="border-bottom: none;text-align: center">
@@ -109,7 +109,7 @@
         </Card>
       </div>
     </Col>
-      <Col span="16">
+      <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 16}" :lg="{ span: 16}">
       <div>
         <task-status-show :taskInfo="taskInfo" ref="showCompletionRate"></task-status-show>
       </div>

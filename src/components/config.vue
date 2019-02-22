@@ -1,6 +1,6 @@
 <template>
   <Row :gutter="16" style="padding:20px">
-    <Col span="14">
+    <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 14}" :lg="{ span: 14}">
       <div style="border: #70afc4 1px solid" >
         <div class="ivu-card-head" style="background-color: #70afc4">
         <p slot="title">sip路由配置</p>
@@ -76,7 +76,7 @@
         </div>
         </div>
     </Col>
-    <Col span="10">
+    <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 10}" :lg="{ span: 10}">
       <sys-config></sys-config>
     </Col>
   </Row>

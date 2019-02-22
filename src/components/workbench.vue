@@ -9,12 +9,12 @@
     </div>
 
     <Row>
-      <Col span="12">
+      <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 24}" :lg="{ span: 12}">
         <div id="myChart3" :style="{width: '500px', height: '300px'}">
 
         </div>
       </Col>
-      <Col span="12">
+      <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 24}" :lg="{ span: 12}">
         <div id="myChart2" :style="{width: '500px', height: '260px'}">
 
         </div>
