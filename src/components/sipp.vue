@@ -92,10 +92,12 @@
 <script>
   export default {
     name: "sipp",
+    props: ["formData"],
     data() {
       return {
         xmlScriptList: [],
         csvScriptList: [],
+        options: {},
         formLeft: {
           taskName: '',
           callRoute: '',
@@ -103,14 +105,13 @@
           csvScript: '',
           beginConcurrentNum: null,
           lostRate: null,
-          lastForCallTime: null,
           callType: "1",
+          lastForCallTime: null,
           increaseTime: null,
           increaseConNum: null,
           decreaseTime: null,
-          decreaseConNum: null
-        },
-        options: {},
+          decreaseConNum: null,
+      },
       }
     },
 
@@ -142,6 +143,7 @@
 
       },
       getSciptList(type) {
+
         this.optionsIsOpen = !this.optionsIsOpen;
         if (this.$store.state.CurrentPath && this.optionsIsOpen) {
 
@@ -224,7 +226,7 @@
           }
         })
       },
-      initData() {
+    initData() {
         this.formLeft = {
           taskName: '',
           callRoute: '',
@@ -240,7 +242,8 @@
           decreaseConNum: null,
         };
       },
-    }
+    },
+
   }
 </script>
 

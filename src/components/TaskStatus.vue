@@ -22,7 +22,7 @@
               <Col span="16">
                 <Tabs :animated="false">
                   <TabPane label="sipp">
-                    <sipp ref="sipp" @watchChild="changeModal"></sipp>
+                    <sipp ref="sipp" @watchChild="changeModal" :formData="formData"></sipp>
                   </TabPane>
                   <TabPane label="python">
                     <python></python>
@@ -168,7 +168,12 @@
           csvScript: '-',
           lastForCallTime: '-',
           lostRate: '-',
+          callType: '1',
           increase: '-',
+          increaseTime: '-',
+          increaseConNum: 0,
+          decreaseTime: '-',
+          decreaseConNum: 0,
           decrease: '-',
           completionRate: 0,
           elapsedTime: 0,
@@ -181,6 +186,20 @@
           avgCallLength: 0,
           asr: 0,
           callRate: 0
+        },
+        formData: {
+          taskName: '',
+          callRoute: '',
+          xmlScript: '',
+          csvScript: '',
+          beginConcurrentNum: null,
+          lostRate: null,
+          lastForCallTime: null,
+          callType: "1",
+          increaseTime: null,
+          increaseConNum: null,
+          decreaseTime: null,
+          decreaseConNum: null
         }
 
       }
@@ -256,7 +275,12 @@
             that.taskInfo.xmlScript = ret.data.data.xmlScript;
             that.taskInfo.csvScript = ret.data.data.csvScript;
             that.taskInfo.beginConcurrentNum = ret.data.data.beginConcurrentNum;
-            that.taskInfo.lostRate = ret.data.lostRate;
+            that.taskInfo.lostRate = ret.data.data.lostRate;
+            that.taskInfo.callType = ret.data.data.callType;
+            that.taskInfo.increaseTime = ret.data.data.increaseTime;
+            that.taskInfo.increaseConNum = ret.data.data.increaseConNum;
+            that.taskInfo.decreaseTime = ret.data.data.decreaseTime;
+            that.taskInfo.decreaseConNum = ret.data.data.decreaseConNum;
             that.taskInfo.increase = ret.data.data.increaseTime + "|" + ret.data.data.increaseConNum;
             that.taskInfo.decrease = ret.data.data.decreaseTime + "|" + ret.data.data.decreaseConNum;
             that.taskInfo.elapsedTime = ret.data.data.elapsedTime;
@@ -293,6 +317,24 @@
             that.getTaskInfo();
           }
         })
+      },
+
+      edit(id) {
+        this.getTaskInfo(id);
+        this.formData.taskName = this.taskInfo.taskName;
+        this.formData.callRoute = this.taskInfo.callRoute;
+        this.formData.xmlScript = this.taskInfo.xmlScript;
+        this.formData.csvScript = this.taskInfo.csvScript;
+        this.formData.beginConcurrentNum = this.taskInfo.beginConcurrentNum;
+        this.formData.lostRate = this.taskInfo.lostRate;
+        this.formData.callType = this.taskInfo.callType;
+        this.formData.increaseTime = this.taskInfo.increaseTime;
+        this.formData.increaseConNum = this.taskInfo.increaseConNum;
+        this.formData.decreaseTime = this.taskInfo.decreaseTime;
+        this.formData.decreaseConNum = this.taskInfo.decreaseConNum;
+        console.log(this.formData);
+        this.Modal = true;
+        this.refresh();
       },
 
       pauseOrPlay(id) {

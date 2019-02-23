@@ -8,14 +8,14 @@
       <div style="clear: both"></div>
     </div>
 
-    <Row>
+    <Row :gutter="16">
       <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 24}" :lg="{ span: 12}">
-        <div id="myChart3" :style="{width: '500px', height: '300px'}">
+        <div id="myChart3" :style="{width: '580px', height: '300px'}">
 
         </div>
       </Col>
       <Col :xs="{ span: 24}" :sm="{ span: 24}" :md="{ span: 24}" :lg="{ span: 12}">
-        <div id="myChart2" :style="{width: '500px', height: '260px'}">
+        <div id="myChart2" :style="{width: '580px', height: '260px'}">
 
         </div>
       </Col>
@@ -321,7 +321,7 @@
             {
               name: '上行带宽(KB/s)',
               type: 'value',
-              max: 100000000
+              max: 100000
             },
             {
               name: '下行带宽(KB/s)',
