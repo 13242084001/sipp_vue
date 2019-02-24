@@ -31,6 +31,7 @@
 
 <script>
   import router from '../router'
+  import crypto from 'crypto'
   //import Cookie from 'vue-cookies'
 
   export default {
@@ -64,7 +65,7 @@
               method: 'POST',
               data: {
                 username: this.formInline.username,
-                password: this.formInline.password
+                password: this.md5Passwd()
               }
             }).then(function (ret) {
               console.log(ret);
@@ -83,6 +84,13 @@
           }
         });
 
+      },
+      md5Passwd() {
+        var md5 = crypto.createHash("md5");
+        md5.update(this.formInline.password); //需要加密的密码
+        var password = md5.digest('hex');  //password 加密完的密码
+        console.log(password);
+        return password
       }
     }
   }
