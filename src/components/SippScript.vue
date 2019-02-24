@@ -35,6 +35,23 @@
       >
 
       </path-tree>
+      <Upload
+        multiple
+        type="drag"
+        :format="['xml','csv','pcap']"
+        :on-format-error="handleFormatError"
+        :max-size="10240"
+        :on-exceeded-size="handleMaxSize"
+        :on-success="handleSuccess"
+        :headers="headers"
+        :data="data"
+        :action="upload_url"
+      style="margin-top: 30px">
+        <div style="padding: 20px 0">
+            <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+            <p>选择目录上传文件{{data2}}</p>
+        </div>
+    </Upload>
     </Col>
 
     <Col span="18">
@@ -50,6 +67,9 @@
   <!--<div class="grid-content bg-purple" style="border: #ddd 1px solid;color: #428bca;margin: 10px 20px 30px 20px">
 
       <!--<div v-for="(menuItem,index) in data_.nodes" :key="index">-->
+
+
+
 
 
 </template>
@@ -75,7 +95,14 @@
         alertStyle: {
           display: 'none',
           color: 'red'
-        }
+        },
+        headers: {
+              Authorization: this.$store.state.token
+            },
+            data: {
+              dstpath: ''//可以直接用currentDir
+            },
+            upload_url: process.env.URL_PATH+'/SippScript!upload',
       }
     },
 
@@ -157,12 +184,35 @@
             that.$Message.error(ret.data.error)//这里应该搞个目录名不能为空
           }
         }).catch()
-      }
+      },
+
+      handleFormatError (file) {
+          this.$Notice.warning({
+            title: '文件格式不正确',
+            desc: file.name + '格式不正确，请选择.xml .csv .pcap'
+          });
+        },//这是处理上传文件格式的方法
+      handleMaxSize (file) {
+                this.$Notice.warning({
+                    title: '文件大小限制',
+                    desc: '文件' + file.name + '太大, 不能超过10M.'
+                });
+            },//这是处理上传文件大小的方法
+
+      handleSuccess () {
+                this.refresh();
+            },
 
     },
     mounted() {
       this.refresh();
-    }
+    },
+    computed: {
+          data2() {
+            this.data.dstpath = this.$store.state.CurrentPath;
+            return null
+          }
+      },
   }
 </script>
 
