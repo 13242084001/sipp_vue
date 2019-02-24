@@ -7,6 +7,25 @@
            @on-selection-change="changeSelect" height="200" :columns="columns1"
            :data="this.$store.state.ScriptData"></Table>
 
+    <Modal v-model="Modal" title="编辑脚本" width="70%">
+      <a slot="close" @click="changeModal"><i
+        class="ivu-icon ivu-icon-ios-close"></i></a>
+      <div slot="footer"> <!--这里自定义的footer；因为自带的确定按钮始终会点击关闭-->
+        <Button type="text" @click="changeModal">取消</Button>
+        <Button type="success" @click="confirm">确定</Button>
+      </div>
+
+      <quill-editor
+        v-model="content"
+        ref="myQuillEditor"
+        @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+        @change="onEditorChange($event)">
+      </quill-editor>
+
+
+    </Modal>
+
+
   </div>
 
   <!--tatal:数据总条数；current：当前页码; page-size：每页显示条数; placement: 条数切展开弹框方向;-->
@@ -116,9 +135,11 @@
                     },
                     on: {
                       click: () => {
-                        console.log(params);
-                        this.deleteScript();
-                        this.remove(params.index)//这里还要绑定axios，发送post，后端删除
+                        console.log(params.row.fileName);
+                        this.Modal = true;
+                        //this.deleteScript();
+                        this.viewScript(params.row.fileName)//这里还要绑定axios，发送post，后端删除
+
                       }
                     }
                   },
@@ -132,7 +153,8 @@
         ],
         ScriptData: [],
         selectedDatas: [],//所有选中的数据
-
+        Modal: false,
+        content: '',
 
       }
     },
@@ -205,24 +227,26 @@
         console.log(selectedlist);
         if (selectedlist.length !== 0) {
           var that = this;
+
           function myFunction(select) {
             that.$axios.request({
-            url: process.env.URL_PATH + '/SippScript!download',//下载脚本接口
-            method: 'post',
-            params: {},
-            data: {
-              dirPath: that.$store.state.CurrentPath,
-              fileName: select,
-            }
-          }).then(function (ret) {
-            if (ret.headers["content-type"] === "application/octet-stream") {
-              let fileDownload = require('js-file-download');
-              var fileName = ret.headers["content-disposition"].split("\"")[1];
-              console.log(fileName);
-              fileDownload(ret.data, fileName);
-            }
-          }).catch()
+              url: process.env.URL_PATH + '/SippScript!download',//下载脚本接口
+              method: 'post',
+              params: {},
+              data: {
+                dirPath: that.$store.state.CurrentPath,
+                fileName: select,
+              }
+            }).then(function (ret) {
+              if (ret.headers["content-type"] === "application/octet-stream") {
+                let fileDownload = require('js-file-download');
+                var fileName = ret.headers["content-disposition"].split("\"")[1];
+                console.log(fileName);
+                fileDownload(ret.data, fileName);
+              }
+            }).catch()
           }
+
           selectedlist.forEach(myFunction)
 
         } else {
@@ -232,12 +256,49 @@
       },
 
 
-    },
+      changeModal() {
+        this.Modal = false;
+
+      },
+      confirm() {
+        console.log(1111)
+      },
 
 
+
+      viewScript(fileName) {
+        var that = this;
+        this.$axios.request({
+          url: process.env.URL_PATH + '/SippScript!viewScript',//下载脚本接口
+          method: 'post',
+          params: {},
+          data: {
+            dirPath: that.$store.state.CurrentPath,
+            fileName: fileName,
+          }
+        }).then(function (ret) {
+          console.log(that.content);
+          //that.content = ret.data;
+          //console.log(that.content);
+        })
+      },
+
+      onEditorReady(editor) { // 准备编辑器
+
+      },
+      onEditorBlur() {
+      }, // 失去焦点事件
+      onEditorFocus() {
+      }, // 获得焦点事件
+      onEditorChange() {
+      }, // 内容改变事件
+
+
+    }
   }
 </script>
 
 <style scoped>
+
 
 </style>

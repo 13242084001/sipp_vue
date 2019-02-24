@@ -57,7 +57,7 @@
     <Col span="18">
       <!--<Button type="error" ghost @click="deleteAll">批量删除</Button>-->
       <!--<Table stripe border ref="selection" @on-select-all="selectAll" @on-select="singleSelect" @on-selection-change="changeSelect" height="200" :columns="columns1" :data="this.$store.state.ScriptData"></Table>-->
-      <p v-html="currentDir"></p>
+      <p style="font-size: 18px;color: black;margin-bottom: 10px">当前路径: <span v-html="currentDir"></span></p>
       <script-table @watchChild="parentRecived"></script-table>
       <page></page>
     </Col>

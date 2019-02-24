@@ -17,6 +17,11 @@ import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import echarts from 'echarts';
 import Cookie from 'vue-cookies';
+import VueQuillEditor from 'vue-quill-editor';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
+
 //Vue.use(BootstrapVue);
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$axios = axios;
@@ -26,6 +31,8 @@ Vue.config.productionTip = false;
 //Vue.use(Element, { size: 'small', zIndex: 3000 });
 Vue.use(router);
 Vue.use(iView);
+Vue.use(VueQuillEditor);
+
 
 Vue.filter('toZn', function (value) {
   if (value === 1) {
