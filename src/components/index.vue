@@ -57,8 +57,8 @@
 
       <Layout>
         <Sider hide-trigger :style="{background: '#ddd'}">
-          <Menu :active-name="active" width="auto" :open-names="open" ref="active" @on-select="routeTo" style="background-color: #ddd">
-            <MenuItem name="/index/workbench" style="border-right: none">
+          <Menu :active-name="active" width="auto" :open-names="open" ref="child" @on-select="routeTo" style="background-color: #ddd">
+            <!--<MenuItem name="/index/workbench" style="border-right: none">
               <i class="fa fa-tachometer fa-fw"></i>
               <router-link to="/index/workbench" class="left-link">工作台</router-link>
             </MenuItem>
@@ -81,7 +81,7 @@
               </MenuItem>
             </Submenu>
 
-            <Submenu name="4">
+            <Submenu name="">
               <template slot="title"><i class="fa fa-table fa-fw"></i>
                 <span style="color: black">脚本</span>
               </template>
@@ -91,7 +91,30 @@
               <MenuItem name="/index/PythonScript">
                 <router-link to="/index/PythonScript" class="left-link">python脚本</router-link>
               </MenuItem>
-            </Submenu>
+            </Submenu>-->
+
+            <template  v-for="(item, index) in listdata">
+                <template v-if="item.child&&item.child.length>0">
+                    <Submenu :name="item.name">
+                    <template slot="title">
+                        <i :class="item.class"></i>
+                        <span>{{item.name}}</span>
+                    </template>
+                    <template v-for="sub in item.child">
+                        <MenuItem :name="sub.href"><span>{{sub.name}}</span></MenuItem>
+                    </template>
+                        </Submenu>
+                </template>
+                <template v-else>
+                <MenuItem :name="item.href" >
+                    <i :class="item.class"></i>
+                        <span>{{item.name}}</span>
+                </MenuItem>
+              </template>
+            </template>
+
+
+
           </Menu>
         </Sider>
         <Layout :style="{padding: 0}">
@@ -139,8 +162,49 @@
           color: 'red'
         },
 
-        open: ['1'],
-        active: '/index/workbench'
+        open: [],
+        active: '/index/workbench',
+
+        listdata:[
+                {
+                    'name':'工作台',
+                    'class':"fa fa-tachometer fa-fw",
+                    'href':'/index/workbench',
+                },
+                {
+                    'name':'配置',
+                    'class':"fa fa-cogs",
+                    'href':'/index/config',
+                },
+                {
+                    'name':'任务',
+                    'class':"fa fa-tasks",
+                    'child':[
+                        {
+                            'name':'任务状态',
+                            'href':'/index/TaskStatus',
+                        },
+                      {
+                        'name': '任务内容',
+                        'href': '/index/TaskContent',
+                      }
+                ]
+                },
+                {
+                    'name':'脚本',
+                    'class':"fa fa-table fa-fw",
+                    'child':[
+                        {
+                            'name':'sipp脚本',
+                            'href':'/index/SippScript',
+                        },
+                      {
+                        'name': 'python脚本',
+                        'href': '/index/PythonScript',
+                      }
+                ]
+                }
+        ]
       }
     },
     methods: {
@@ -189,12 +253,34 @@
 
       },
 
+      watchRoute(){
+        console.log(this.$route.name);
+            if((this.$route.name=="SippScript")||(this.$route.name=="PythonScript")){
+                this.open = ['脚本'];
+                    //this.$refs.child.$children[2].opened = false;
+            }else if((this.$route.name=="TaskStatus")||(this.$route.name=="TaskContent")){
+                this.open = ['任务']
+            }else {
+                this.open = [];
+            }
+            this.$nextTick(()=> {
+                    this.$refs.child.updateOpened();
+                    this.active = this.$route.path;
+                    this.$refs.child.updateActiveName();
+                });
+        }
+
+    },
+
+    watch: {
+      $route(){
+                this.watchRoute();
+            }
     },
 
     mounted(){
       this.$nextTick(()=>{
-        this.active = this.$route.path;
-        this.$refs.active.updateActiveName()
+        this.watchRoute();
       })
     }
   }
@@ -209,25 +295,17 @@
     overflow: hidden;
   }
 
-  .layout-logo {
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
-  }
-
   .layout-nav {
     width: 420px;
     margin: 0 auto;
     margin-right: 20px;
   }
 
-  .left-link {
-    text-decoration: none;
+  i {
+    color: black;
+  }
+
+  span {
     color: black;
   }
 
