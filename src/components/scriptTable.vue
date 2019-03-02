@@ -154,7 +154,7 @@
         ScriptData: [],
         selectedDatas: [],//所有选中的数据
         Modal: false,
-        content: '',
+        content: '<p>123456</p>',
 
       }
     },
@@ -264,7 +264,13 @@
         console.log(1111)
       },
 
-
+      escapeStringHTML(str) {
+        str = str.replace(/</g,'&lt;');
+        str = str.replace(/>/g,'&gt;');
+        str = str.replace(/\n/g,'<br>');
+        str =str.replace(/ /g, '&nbsp;');
+        return str;
+      },
 
       viewScript(fileName) {
         var that = this;
@@ -278,7 +284,7 @@
           }
         }).then(function (ret) {
           console.log(that.content);
-          //that.content = ret.data;
+          that.content = that.escapeStringHTML(ret.data.data);
           //console.log(that.content);
         })
       },
@@ -299,6 +305,9 @@
 </script>
 
 <style scoped>
-
-
+  .ql-snow .ql-editor pre.ql-syntax {
+    background-color: #23241f;
+    color: #f8f8f2;
+    overflow: visible;
+}
 </style>

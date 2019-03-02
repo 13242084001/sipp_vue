@@ -57,26 +57,26 @@
 
       <Layout>
         <Sider hide-trigger :style="{background: '#ddd'}">
-          <Menu active-name="1-2" width="auto" :open-names="['1']" style="background-color: #ddd">
-            <MenuItem name="1" style="border-right: none">
+          <Menu :active-name="active" width="auto" :open-names="open" ref="active" @on-select="routeTo" style="background-color: #ddd">
+            <MenuItem name="/index/workbench" style="border-right: none">
               <i class="fa fa-tachometer fa-fw"></i>
               <router-link to="/index/workbench" class="left-link">工作台</router-link>
             </MenuItem>
 
-            <MenuItem name="2">
+            <MenuItem name="/index/config">
               <i class="fa fa-cogs"></i>
               <router-link to="/index/config" class="left-link">&nbsp;配置</router-link>
             </MenuItem>
 
 
-            <Submenu name="3">
+            <Submenu name="">
               <template slot="title"><i class="fa fa-tasks"></i>
                 &nbsp;<span style="color: black">任务</span>
               </template>
-              <MenuItem name="3-1">
+              <MenuItem name="/index/TaskStatus">
                 <router-link to="/index/TaskStatus" class="left-link">任务状态</router-link>
               </MenuItem>
-              <MenuItem name="3-2">
+              <MenuItem name="/index/TaskContent">
                 <router-link to="/index/TaskContent" class="left-link">任务内容</router-link>
               </MenuItem>
             </Submenu>
@@ -85,10 +85,10 @@
               <template slot="title"><i class="fa fa-table fa-fw"></i>
                 <span style="color: black">脚本</span>
               </template>
-              <MenuItem name="4-1">
+              <MenuItem name="/index/SippScript">
                 <router-link to="/index/SippScript" class="left-link">sipp 脚本</router-link>
               </MenuItem>
-              <MenuItem name="4-2">
+              <MenuItem name="/index/PythonScript">
                 <router-link to="/index/PythonScript" class="left-link">python脚本</router-link>
               </MenuItem>
             </Submenu>
@@ -137,10 +137,17 @@
         alertStyle: {
           display: 'none',
           color: 'red'
-        }
+        },
+
+        open: ['1'],
+        active: '/index/workbench'
       }
     },
     methods: {
+      routeTo(name) {
+        this.$router.push(name);
+      },
+
       handle(name) {
         console.log(name);
         if (name === "changePasswd") {
@@ -182,6 +189,13 @@
 
       },
 
+    },
+
+    mounted(){
+      this.$nextTick(()=>{
+        this.active = this.$route.path;
+        this.$refs.active.updateActiveName()
+      })
     }
   }
 </script>
