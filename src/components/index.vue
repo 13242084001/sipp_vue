@@ -96,19 +96,26 @@
             <template  v-for="(item, index) in listdata">
                 <template v-if="item.child&&item.child.length>0">
                     <Submenu :name="item.name">
-                    <template slot="title">
+                    <template slot="title" class="left-link">
                         <i :class="item.class"></i>
                         <span>{{item.name}}</span>
                     </template>
                     <template v-for="sub in item.child">
-                        <MenuItem :name="sub.href"><span>{{sub.name}}</span></MenuItem>
+                        <MenuItem :name="sub.href"><span class="left-link">{{sub.name}}</span></MenuItem>
                     </template>
                         </Submenu>
                 </template>
                 <template v-else>
                 <MenuItem :name="item.href" >
+                  <div v-if="item.name=='配置'" class="left-link">
+                    <i :class="item.class" ></i>
+                        <span>&nbsp;&nbsp;{{item.name}}</span>
+                  </div>
+                  <div v-else class="left-link">
                     <i :class="item.class"></i>
                         <span>{{item.name}}</span>
+                  </div>
+
                 </MenuItem>
               </template>
             </template>
@@ -307,6 +314,7 @@
 
   span {
     color: black;
+    margin-left: 10px;
   }
 
 </style>
