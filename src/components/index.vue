@@ -57,15 +57,15 @@
 
       <Layout>
         <Sider hide-trigger :style="{background: '#ddd'}">
-          <Menu :active-name="active" width="auto" :open-names="open" ref="child" @on-select="routeTo" style="background-color: #ddd">
+          <Menu :active-name="active" width="auto" :open-names="open" @on-select="routeTo" ref="child" style="background-color: #ddd">
             <!--<MenuItem name="/index/workbench" style="border-right: none">
-              <i class="fa fa-tachometer fa-fw"></i>
-              <router-link to="/index/workbench" class="left-link">工作台</router-link>
+
+              <router-link to="/index/workbench" class="left-link" tag="li"><i class="fa fa-tachometer fa-fw" style="margin-right: 20px"></i>工作台</router-link>
             </MenuItem>
 
             <MenuItem name="/index/config">
-              <i class="fa fa-cogs"></i>
-              <router-link to="/index/config" class="left-link">&nbsp;配置</router-link>
+
+              <router-link to="/index/config" class="left-link" tag="li"><i class="fa fa-cogs" style="margin-right: 25px"></i>配置</router-link>
             </MenuItem>
 
 
@@ -74,10 +74,10 @@
                 &nbsp;<span style="color: black">任务</span>
               </template>
               <MenuItem name="/index/TaskStatus">
-                <router-link to="/index/TaskStatus" class="left-link">任务状态</router-link>
+                <router-link to="/index/TaskStatus" class="left-link" tag="li">任务状态</router-link>
               </MenuItem>
               <MenuItem name="/index/TaskContent">
-                <router-link to="/index/TaskContent" class="left-link">任务内容</router-link>
+                <router-link to="/index/TaskContent" class="left-link" tag="li">任务内容</router-link>
               </MenuItem>
             </Submenu>
 
@@ -86,34 +86,36 @@
                 <span style="color: black">脚本</span>
               </template>
               <MenuItem name="/index/SippScript">
-                <router-link to="/index/SippScript" class="left-link">sipp 脚本</router-link>
+                <router-link to="/index/SippScript" class="left-link" tag="li">sipp 脚本</router-link>
               </MenuItem>
               <MenuItem name="/index/PythonScript">
-                <router-link to="/index/PythonScript" class="left-link">python脚本</router-link>
+                <router-link to="/index/PythonScript" class="left-link" tag="li">python脚本</router-link>
               </MenuItem>
             </Submenu>-->
 
             <template  v-for="(item, index) in listdata">
                 <template v-if="item.child&&item.child.length>0">
                     <Submenu :name="item.name">
-                    <template slot="title" class="left-link">
+                    <template slot="title">
+
                         <i :class="item.class"></i>
-                        <span>{{item.name}}</span>
+                        <span v-if="item.name=='任务'">&nbsp;{{item.name}}</span>
+                        <span v-else>{{item.name}}</span>
                     </template>
                     <template v-for="sub in item.child">
-                        <MenuItem :name="sub.href"><span class="left-link">{{sub.name}}</span></MenuItem>
+                        <MenuItem :name="sub.href"><span :class="{left_link: active==item.name}">{{sub.name}}</span></MenuItem>
                     </template>
                         </Submenu>
                 </template>
                 <template v-else>
                 <MenuItem :name="item.href" >
-                  <div v-if="item.name=='配置'" class="left-link">
+                  <div v-if="item.name=='配置'" :class="{left_link: active==item.name}">
                     <i :class="item.class" ></i>
-                        <span>&nbsp;&nbsp;{{item.name}}</span>
+                        <span>&nbsp;&nbsp;&nbsp;{{item.name}}</span>
                   </div>
-                  <div v-else class="left-link">
+                  <div v-else :class="{left_link: active==item.name}">
                     <i :class="item.class"></i>
-                        <span>{{item.name}}</span>
+                        <span>&nbsp;{{item.name}}</span>
                   </div>
 
                 </MenuItem>
@@ -264,7 +266,7 @@
         console.log(this.$route.name);
             if((this.$route.name=="SippScript")||(this.$route.name=="PythonScript")){
                 this.open = ['脚本'];
-                    //this.$refs.child.$children[2].opened = false;
+                    this.$refs.child.$children[2].opened = false;
             }else if((this.$route.name=="TaskStatus")||(this.$route.name=="TaskContent")){
                 this.open = ['任务']
             }else {
@@ -308,13 +310,13 @@
     margin-right: 20px;
   }
 
-  i {
-    color: black;
-  }
+
 
   span {
-    color: black;
     margin-left: 10px;
   }
 
+  .left_link {
+    color: red;
+  }
 </style>
